@@ -13,7 +13,7 @@ never starts. Each extra hit must still have its original state and pass current
 tool/food checks. Changed hits are skipped; failed native breaks abort the
 remaining chain. Successful extras incur only the configured additional
 exhaustion. The core has no global mutable state; toggles and cooldowns belong
-to a `Runtime` per game instance.
+to a `Runtime` per world on the hosting thread.
 
 `native/horizon.rs` adds a module inside Horizon's existing game binary and
 implements `Host` using its private APIs. It calls `break_block_as_player`,
@@ -25,24 +25,36 @@ This shared entry point is reached by in-frame mining and guest mining on the
 integrated/LAN/dedicated server. The adapter's survival gate excludes remote
 client prediction and creative/adventure/spectator chains.
 
-`tools/horizon.py` exports only committed files at the pinned revision using
-`git archive`. It checks SHA-256 of the three adapter target files, applies
-exactly-once anchors, and copies the engine/adapter/tests into the staged tree.
-The original `break_block_as_player` body and Cargo manifests/lockfile are
-unchanged. No Cargo dependency is added: the embedded engine uses the game's
-existing serde/serde_json dependencies. Private access stays within the game
-crate. Exported Horizon keeps its original license and notices.
+`tools/horizon.py` exports committed Horizon files with `git archive`, checks
+compatibility hashes, and materializes the committed documentation symlink.
+It never replaces or appends Rust source itself. It invokes the standard
+`horizon-mixins plan` and `apply` commands with `mixins/veinminer/` and records
+the schema-4 JSON plan in `target/mixins/plan.json`. Three cancellable HEAD
+hooks handle the mining entry, normal command dispatch and guest command
+queueing. A support-module declaration installs the shared runtime. The
+original native mining method and original `Game` layout/constructors stay intact.
 
-Generated trees live under content-derived paths in `target/stages/`. A stage
-is published by renaming a completed temporary directory. Reuse verifies all
-recorded source hashes and keeps bytes/mtimes; edited stages fail with an
-explicit error. Stage and Cargo access use Linux file locks, and Cargo artifacts
-live in a separate stable target directory. No game assets or player saves are
-copied. Logs/reports and exported upstream sources are ignored by Git.
+Runtime state uses a thread-local map keyed by `world_root`. Each world has its
+own UUID-keyed toggles and cooldowns. A state lease releases the RefCell borrow
+before calling game code and restores state on normal return, errors or unwinding.
+This avoids adding fields to `Game` and keeps server threads independent.
 
-The mixin engine at `../horizon-mixins` currently rejects generic impls and target
-bodies containing closures/`?`. The real `Game<'a>` mining methods use all of
-these. This adapter therefore uses a narrow pinned source edit, with source
-hashes and original-body preservation checked independently. It is a separate
-native port build. A future standard mixin bundle can replace this adapter when
-those target contexts have compilation-tested support in the transformer.
+The self-contained runtime payload is committed at `mixins/veinminer/runtime.rs`.
+`tools/bundle.py` assembles it from the adapter, core and tests; this changes
+mod source only. `--check` rejects stale generated payloads. All private access
+uses ordinary same-crate Rust visibility; no game-to-mod Cargo dependency is
+created. Engine helpers and the module use Horizon's existing dependencies.
+
+Mixin staging publishes a complete separate workspace atomically and preserves
+unchanged bytes/mtimes. The port holds its stage lock through compilation and
+locks its separate Cargo target directory. Pristine exports have source hash
+markers; exported Horizon retains its license and notices. No assets or saves
+are copied, and generated trees/logs are ignored by Git.
+
+`tools/test_stage.py` applies the real bundle twice and verifies its three HEAD
+injections and one module, source bytes/mtimes and immutable upstream checkout.
+The Rust audit in `tools/audit` removes only planned additions and compares all
+affected original files using syn and canonical formatting. This checks every
+other method, struct and expression, including `break_block_as_player`, rather
+than relying on a textual source replacement. Native compilation and the
+embedded mining tests validate the resulting real game binary.

@@ -52,7 +52,7 @@ The **first matching group in file order** supplies setting overrides. Group
 IDs must be unique. `enabled` is a global switch; every other supported setting
 can be overridden by a group. A standalone allowed block matches only its own ID.
 
-Per-player session toggles apply after global/group settings and permissions.
+Per-world/thread session toggles keyed by player UUID apply after global/group settings and permissions.
 `permissionRestricted` uses names as reported by Horizon: LAN/server guests use
 their acting names, and in-frame single player uses `Player`. It is an explicit
 allowlist, without a Bukkit/LuckPerms integration.

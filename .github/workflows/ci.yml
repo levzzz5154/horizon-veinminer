@@ -15,6 +15,8 @@ jobs:
       - run: rustfmt --edition 2024 --check native/horizon.rs
       - run: cargo clippy --all-targets --locked --offline -- -D warnings
       - run: cargo test --locked --offline
+      - run: python3 tools/bundle.py --check
+      - run: cargo fmt --manifest-path tools/audit/Cargo.toml --check
   native:
     runs-on: ubuntu-latest
     steps:
@@ -23,6 +25,13 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Install pinned Horizon Mixins
+        run: |
+          git clone https://github.com/levzzz5154/horizon-mixins ../horizon-mixins
+          VEINMINER_MIXINS_REV=$(python3 -c 'import json; print(json.load(open("compatibility.json"))["horizon_mixins_revision"])')
+          git -C ../horizon-mixins checkout "$VEINMINER_MIXINS_REV"
+          cargo fetch --locked --manifest-path ../horizon-mixins/Cargo.toml
+          cargo fetch --locked --manifest-path tools/audit/Cargo.toml
       - name: Export pinned Horizon source
         run: |
           git clone --filter=blob:none https://github.com/ludovic111/horizon ../horizon

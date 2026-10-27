@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Exercise staging against a local pinned Horizon checkout; never launch the game."""
+"""Verify the real TOML mixin plan, repeatability and pristine Horizon source."""
 import argparse
 import hashlib
 import json
@@ -15,46 +15,31 @@ def snapshot(root):
 
 
 def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--horizon', type=Path, default=horizon.ROOT.parent / 'horizon')
-    args = parser.parse_args()
-    checkout = args.horizon.resolve()
-    status_before = subprocess.check_output(['git', '-C', str(checkout), 'status', '--porcelain'])
-    original_bytes = {p: (checkout / p).read_bytes() for p in horizon.COMPAT['source_sha256']}
-    with tempfile.TemporaryDirectory(prefix='veinminer-stage-test-', dir=horizon.ROOT / 'target') as scratch:
-        stage, changed = horizon.stage(checkout, Path(scratch))
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--horizon',type=Path,default=horizon.ROOT.parent/'horizon')
+    args=parser.parse_args()
+    checkout=args.horizon.resolve()
+    status=subprocess.check_output(['git','-C',str(checkout),'status','--porcelain'])
+    original={p:(checkout/p).read_bytes() for p in horizon.COMPAT['source_sha256']}
+    with tempfile.TemporaryDirectory(prefix='veinminer-mixins-test-',dir=horizon.ROOT/'target') as scratch:
+        root=Path(scratch)
+        output,changed=horizon.mixin_stage(checkout,root)
         assert changed
-        first = snapshot(stage)
-        again, changed = horizon.stage(checkout, Path(scratch))
-        assert again == stage and not changed
-        assert snapshot(stage) == first, 'unchanged stage bytes/mtimes changed'
-        source = subprocess.check_output(['git','-C',str(checkout),'show',horizon.PIN+':crates/horizon-client/src/game.rs'], text=True)
-        staged = (stage/'crates/horizon-client/src/game.rs').read_text()
-        start = '    fn break_block_as_player('
-        end = '    /// The hand whose use ended the click'
-        assert source.split(start)[1].split(end)[0] == staged.split(start)[1].split(end)[0], 'original player mining implementation changed'
-        marker = json.loads((stage/'.horizon-veinminer.json').read_text())
-        source_file = stage / horizon.ENGINE
-        source_file.write_text(source_file.read_text()+'\n// changed\n')
-        try:
-            horizon.stage(checkout,Path(scratch))
-        except ValueError as error:
-            assert 'staged source was edited' in str(error)
-        else:
-            raise AssertionError('edited stage was reused')
-        for bad in ['', 'anchor anchor']:
-            try:
-                horizon.replace_once(bad, 'anchor', 'replacement', 'example')
-            except ValueError:
-                pass
-            else:
-                raise AssertionError('missing or competing adapter anchors accepted')
-        assert all((checkout/p).read_bytes() == value for p,value in original_bytes.items())
-        assert subprocess.check_output(['git','-C',str(checkout),'status','--porcelain']) == status_before
-        print(json.dumps({'status':'ok','source_files_verified':len(marker['files']),
-                          'deterministic_bytes_and_mtimes':True,'edited_stage_rejected':True,
-                          'original_mining_method_unchanged':True,'original_checkout_unchanged':True},indent=2))
+        first=snapshot(output)
+        second,changed=horizon.mixin_stage(checkout,root)
+        assert second==output and not changed
+        assert first==snapshot(output)
+        plan=json.loads((root/'plan.json').read_text())
+        assert plan['schema']==4
+        assert len(plan['injections'])==3 and len(plan['modules'])==1
+        assert {p['mod_id'] for p in plan['injections']}=={'veinminer'}
+        pristine=list((root/'original').glob('*/.horizon-veinminer.json'))[0].parent
+        subprocess.run(['cargo','run','--quiet','--locked','--offline','--manifest-path',str(horizon.ROOT/'tools/audit/Cargo.toml'),
+                        '--target-dir',str(horizon.ROOT/'target/audit'),'--',str(pristine),str(output),str(root/'plan.json')],check=True)
+        assert all((checkout/p).read_bytes()==b for p,b in original.items())
+        assert subprocess.check_output(['git','-C',str(checkout),'status','--porcelain'])==status
+        print(json.dumps({'status':'ok','injections':3,'modules':1,'source_rewriter':'horizon-mixins',
+                          'deterministic_bytes_and_mtimes':True,'original_asts_preserved':True,
+                          'original_checkout_unchanged':True},indent=2))
 
-
-if __name__ == '__main__':
-    main()
+if __name__=='__main__': main()

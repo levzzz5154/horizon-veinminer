@@ -11,6 +11,29 @@ pub(super) struct State {
     config: Option<Config>,
 }
 
+thread_local! {
+    static STATES: std::cell::RefCell<std::collections::BTreeMap<std::path::PathBuf, State>> = const { std::cell::RefCell::new(std::collections::BTreeMap::new()) };
+}
+fn with_state<T>(game: &mut Game<'_>, run: impl FnOnce(&mut Game<'_>, &mut State) -> T) -> T {
+    struct Lease {
+        key: std::path::PathBuf,
+        state: State,
+    }
+    impl Drop for Lease {
+        fn drop(&mut self) {
+            STATES.with(|states| {
+                states
+                    .borrow_mut()
+                    .insert(self.key.clone(), std::mem::take(&mut self.state));
+            });
+        }
+    }
+    let key = game.world_root.clone();
+    let state = STATES.with(|states| states.borrow_mut().remove(&key).unwrap_or_default());
+    let mut lease = Lease { key, state };
+    run(game, &mut lease.state)
+}
+
 fn config_path() -> Option<std::path::PathBuf> {
     std::env::var_os("HORIZON_VEINMINER_CONFIG").map(Into::into)
 }
@@ -124,72 +147,76 @@ impl Host for Native<'_, '_> {
 }
 impl Game<'_> {
     pub(super) fn veinminer_break_block(&mut self, pos: Position) -> Result<()> {
-        let mut state = std::mem::take(&mut self.veinminer);
-        if state.config.is_none() {
-            state.config = Some(load_config().unwrap_or_else(|error| {
-                eprintln!("Veinminer disabled: {error}");
-                let mut config = Config::default();
-                config.settings.enabled = false;
-                config
-            }));
-        }
-        let config = state.config.as_ref().unwrap();
-        let result = state.runtime.mine(&mut Native { game: self }, config, pos);
-        self.veinminer = state;
-        result.map(|_| ())
+        with_state(self, |game, state| {
+            if state.config.is_none() {
+                state.config = Some(load_config().unwrap_or_else(|error| {
+                    eprintln!("Veinminer disabled: {error}");
+                    let mut config = Config::default();
+                    config.settings.enabled = false;
+                    config
+                }));
+            }
+            let config = state.config.as_ref().unwrap();
+            state
+                .runtime
+                .mine(&mut Native { game }, config, pos)
+                .map(|_| ())
+        })
     }
     pub(super) fn veinminer_command(&mut self, command: &str) -> Option<bool> {
-        let mut words = command.split_whitespace();
-        if words.next()? != "veinminer" {
-            return None;
-        }
-        let args: Vec<_> = words.collect();
-        let actor = self.acting_player_uuid();
-        let message = match args.as_slice() {
-            [] | ["status"] => format!(
-                "Veinminer: {}",
-                if self.veinminer.runtime.enabled(actor) {
-                    "on"
-                } else {
-                    "off"
-                }
-            ),
-            ["toggle"] | ["on"] | ["off"] => {
-                let on = match args[0] {
-                    "on" => true,
-                    "off" => false,
-                    _ => !self.veinminer.runtime.enabled(actor),
-                };
-                self.veinminer.runtime.set_enabled(actor, on);
-                format!("Veinminer: {}", if on { "on" } else { "off" })
+        with_state(self, |game, state| {
+            let mut words = command.split_whitespace();
+            if words.next()? != "veinminer" {
+                return None;
             }
-            ["reload"] => {
-                if self.ui.registries.permission < 2 {
-                    self.command_failure(horizon_client::text::Text::literal(
-                        "Veinminer reload requires permission level 2",
+            let args: Vec<_> = words.collect();
+            let actor = game.acting_player_uuid();
+            let message = match args.as_slice() {
+                [] | ["status"] => format!(
+                    "Veinminer: {}",
+                    if state.runtime.enabled(actor) {
+                        "on"
+                    } else {
+                        "off"
+                    }
+                ),
+                ["toggle"] | ["on"] | ["off"] => {
+                    let on = match args[0] {
+                        "on" => true,
+                        "off" => false,
+                        _ => !state.runtime.enabled(actor),
+                    };
+                    state.runtime.set_enabled(actor, on);
+                    format!("Veinminer: {}", if on { "on" } else { "off" })
+                }
+                ["reload"] => {
+                    if game.ui.registries.permission < 2 {
+                        game.command_failure(horizon_client::text::Text::literal(
+                            "Veinminer reload requires permission level 2",
+                        ));
+                        return Some(false);
+                    }
+                    match load_config() {
+                        Ok(config) => {
+                            state.config = Some(config);
+                            "Veinminer configuration reloaded".into()
+                        }
+                        Err(error) => {
+                            game.command_failure(horizon_client::text::Text::literal(error));
+                            return Some(false);
+                        }
+                    }
+                }
+                _ => {
+                    game.command_failure(horizon_client::text::Text::literal(
+                        "Usage: /veinminer [status|toggle|on|off|reload]",
                     ));
                     return Some(false);
                 }
-                match load_config() {
-                    Ok(config) => {
-                        self.veinminer.config = Some(config);
-                        "Veinminer configuration reloaded".into()
-                    }
-                    Err(error) => {
-                        self.command_failure(horizon_client::text::Text::literal(error));
-                        return Some(false);
-                    }
-                }
-            }
-            _ => {
-                self.command_failure(horizon_client::text::Text::literal(
-                    "Usage: /veinminer [status|toggle|on|off|reload]",
-                ));
-                return Some(false);
-            }
-        };
-        self.system_message(horizon_client::text::Text::literal(message));
-        Some(true)
+            };
+            game.system_message(horizon_client::text::Text::literal(message));
+            Some(true)
+        })
     }
 }
 

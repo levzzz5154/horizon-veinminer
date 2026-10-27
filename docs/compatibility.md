@@ -25,7 +25,8 @@ configuration format and native Horizon adapter.
 | Upstream `/settings`, `/groups`, `/presets`, `/blocks` editing | Future work; edit JSON and reload |
 | Tags, wildcard IDs and client/server configuration packets | Future work; explicit IDs and server configuration only |
 | Automatic updates | Future work |
-| `.hmod` / standard native mixin bundle packaging | Future work; this version builds a pinned custom binary |
+| Native mixin bundle | Implemented: three TOML HEAD injections and one support module, applied by horizon-mixins 0.4.0 |
+| `.hmod` packaging | Future work; the bundle builds a pinned custom native binary |
 
 The maximum chain counts eligible selected blocks, including the original.
 Search radius is Chebyshev distance around each accepted block; larger radii
