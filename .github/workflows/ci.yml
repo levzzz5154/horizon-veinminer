@@ -1,0 +1,35 @@
+name: Veinminer
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  engine:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: rustup toolchain install 1.95.0 --profile minimal --component rustfmt --component clippy
+      - run: cargo fetch --locked
+      - run: cargo fmt --all --check
+      - run: rustfmt --edition 2024 --check native/horizon.rs
+      - run: cargo clippy --all-targets --locked --offline -- -D warnings
+      - run: cargo test --locked --offline
+  native:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: rustup toolchain install 1.95.0 --profile minimal
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Export pinned Horizon source
+        run: |
+          git clone --filter=blob:none https://github.com/ludovic111/horizon ../horizon
+          git -C ../horizon checkout 028f60881678a9a0e3e198f693a82858fa475c76
+          python3 tools/horizon.py stage > stage.json
+          VEINMINER_STAGE=$(python3 -c 'import json; print(json.load(open("stage.json"))["stage"])')
+          cargo fetch --locked --manifest-path "$VEINMINER_STAGE/Cargo.toml"
+      - run: python3 tools/test_stage.py
+      - run: python3 tools/horizon.py check
+      - run: python3 tools/horizon.py test

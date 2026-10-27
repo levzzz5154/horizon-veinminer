@@ -1,0 +1,11 @@
+[package]
+name = "horizon-veinminer"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.95"
+license = "MIT"
+description = "Server-side vein mining for a pinned Horizon native build"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"

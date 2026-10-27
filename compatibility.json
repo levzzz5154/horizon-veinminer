@@ -1,0 +1,12 @@
+{
+  "horizon_repository": "https://github.com/ludovic111/horizon",
+  "horizon_revision": "028f60881678a9a0e3e198f693a82858fa475c76",
+  "veinminer_reference": "https://github.com/MiraculixxT/Veinminer",
+  "veinminer_revision": "b3bfeb39945260f857a9b79c11dc206c109a9d0c",
+  "adapter_schema": 1,
+  "source_sha256": {
+    "crates/horizon-client/src/game.rs": "0dfd3cb9a29a43f7faa3443eb25a88290b6a8e05b18f52c892e8d14e232a2170",
+    "crates/horizon-client/src/game/commands.rs": "68ae98d03e0ec808a4229d3f3a86048671ad75a33ef27964cdc52a96a2f55bb8",
+    "crates/horizon-client/src/game/lan_actions.rs": "8e5f9a6648bf81b17f3e8241d36102752cd839a501f614f74809fa5d8fe98af1"
+  }
+}

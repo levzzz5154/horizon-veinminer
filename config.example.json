@@ -1,0 +1,345 @@
+{
+  "settings": {
+    "enabled": true,
+    "cooldown": 20,
+    "mustSneak": false,
+    "maxChain": 100,
+    "needCorrectTool": true,
+    "searchRadius": 1,
+    "decreaseDurability": true,
+    "hungerPerBlock": 0.0,
+    "separateGroupMining": false,
+    "permissionRestricted": false
+  },
+  "blocks": [
+    "minecraft:ancient_debris",
+    "minecraft:nether_gold_ore",
+    "minecraft:nether_quartz_ore"
+  ],
+  "groups": [
+    {
+      "id": "coal-ore",
+      "blocks": [
+        "minecraft:coal_ore",
+        "minecraft:deepslate_coal_ore"
+      ],
+      "tools": [],
+      "overrides": {
+        "cooldown": null,
+        "mustSneak": null,
+        "maxChain": null,
+        "needCorrectTool": null,
+        "searchRadius": null,
+        "decreaseDurability": null,
+        "hungerPerBlock": null,
+        "separateGroupMining": null,
+        "permissionRestricted": null
+      }
+    },
+    {
+      "id": "copper-ore",
+      "blocks": [
+        "minecraft:copper_ore",
+        "minecraft:deepslate_copper_ore"
+      ],
+      "tools": [],
+      "overrides": {
+        "cooldown": null,
+        "mustSneak": null,
+        "maxChain": null,
+        "needCorrectTool": null,
+        "searchRadius": null,
+        "decreaseDurability": null,
+        "hungerPerBlock": null,
+        "separateGroupMining": null,
+        "permissionRestricted": null
+      }
+    },
+    {
+      "id": "iron-ore",
+      "blocks": [
+        "minecraft:deepslate_iron_ore",
+        "minecraft:iron_ore"
+      ],
+      "tools": [],
+      "overrides": {
+        "cooldown": null,
+        "mustSneak": null,
+        "maxChain": null,
+        "needCorrectTool": null,
+        "searchRadius": null,
+        "decreaseDurability": null,
+        "hungerPerBlock": null,
+        "separateGroupMining": null,
+        "permissionRestricted": null
+      }
+    },
+    {
+      "id": "gold-ore",
+      "blocks": [
+        "minecraft:deepslate_gold_ore",
+        "minecraft:gold_ore"
+      ],
+      "tools": [],
+      "overrides": {
+        "cooldown": null,
+        "mustSneak": null,
+        "maxChain": null,
+        "needCorrectTool": null,
+        "searchRadius": null,
+        "decreaseDurability": null,
+        "hungerPerBlock": null,
+        "separateGroupMining": null,
+        "permissionRestricted": null
+      }
+    },
+    {
+      "id": "redstone-ore",
+      "blocks": [
+        "minecraft:deepslate_redstone_ore",
+        "minecraft:redstone_ore"
+      ],
+      "tools": [],
+      "overrides": {
+        "cooldown": null,
+        "mustSneak": null,
+        "maxChain": null,
+        "needCorrectTool": null,
+        "searchRadius": null,
+        "decreaseDurability": null,
+        "hungerPerBlock": null,
+        "separateGroupMining": null,
+        "permissionRestricted": null
+      }
+    },
+    {
+      "id": "lapis-ore",
+      "blocks": [
+        "minecraft:deepslate_lapis_ore",
+        "minecraft:lapis_ore"
+      ],
+      "tools": [],
+      "overrides": {
+        "cooldown": null,
+        "mustSneak": null,
+        "maxChain": null,
+        "needCorrectTool": null,
+        "searchRadius": null,
+        "decreaseDurability": null,
+        "hungerPerBlock": null,
+        "separateGroupMining": null,
+        "permissionRestricted": null
+      }
+    },
+    {
+      "id": "diamond-ore",
+      "blocks": [
+        "minecraft:deepslate_diamond_ore",
+        "minecraft:diamond_ore"
+      ],
+      "tools": [],
+      "overrides": {
+        "cooldown": null,
+        "mustSneak": null,
+        "maxChain": null,
+        "needCorrectTool": null,
+        "searchRadius": null,
+        "decreaseDurability": null,
+        "hungerPerBlock": null,
+        "separateGroupMining": null,
+        "permissionRestricted": null
+      }
+    },
+    {
+      "id": "emerald-ore",
+      "blocks": [
+        "minecraft:deepslate_emerald_ore",
+        "minecraft:emerald_ore"
+      ],
+      "tools": [],
+      "overrides": {
+        "cooldown": null,
+        "mustSneak": null,
+        "maxChain": null,
+        "needCorrectTool": null,
+        "searchRadius": null,
+        "decreaseDurability": null,
+        "hungerPerBlock": null,
+        "separateGroupMining": null,
+        "permissionRestricted": null
+      }
+    },
+    {
+      "id": "oak-logs",
+      "blocks": [
+        "minecraft:oak_log",
+        "minecraft:oak_wood"
+      ],
+      "tools": [],
+      "overrides": {
+        "cooldown": null,
+        "mustSneak": null,
+        "maxChain": null,
+        "needCorrectTool": null,
+        "searchRadius": null,
+        "decreaseDurability": null,
+        "hungerPerBlock": null,
+        "separateGroupMining": null,
+        "permissionRestricted": null
+      }
+    },
+    {
+      "id": "spruce-logs",
+      "blocks": [
+        "minecraft:spruce_log",
+        "minecraft:spruce_wood"
+      ],
+      "tools": [],
+      "overrides": {
+        "cooldown": null,
+        "mustSneak": null,
+        "maxChain": null,
+        "needCorrectTool": null,
+        "searchRadius": null,
+        "decreaseDurability": null,
+        "hungerPerBlock": null,
+        "separateGroupMining": null,
+        "permissionRestricted": null
+      }
+    },
+    {
+      "id": "birch-logs",
+      "blocks": [
+        "minecraft:birch_log",
+        "minecraft:birch_wood"
+      ],
+      "tools": [],
+      "overrides": {
+        "cooldown": null,
+        "mustSneak": null,
+        "maxChain": null,
+        "needCorrectTool": null,
+        "searchRadius": null,
+        "decreaseDurability": null,
+        "hungerPerBlock": null,
+        "separateGroupMining": null,
+        "permissionRestricted": null
+      }
+    },
+    {
+      "id": "jungle-logs",
+      "blocks": [
+        "minecraft:jungle_log",
+        "minecraft:jungle_wood"
+      ],
+      "tools": [],
+      "overrides": {
+        "cooldown": null,
+        "mustSneak": null,
+        "maxChain": null,
+        "needCorrectTool": null,
+        "searchRadius": null,
+        "decreaseDurability": null,
+        "hungerPerBlock": null,
+        "separateGroupMining": null,
+        "permissionRestricted": null
+      }
+    },
+    {
+      "id": "acacia-logs",
+      "blocks": [
+        "minecraft:acacia_log",
+        "minecraft:acacia_wood"
+      ],
+      "tools": [],
+      "overrides": {
+        "cooldown": null,
+        "mustSneak": null,
+        "maxChain": null,
+        "needCorrectTool": null,
+        "searchRadius": null,
+        "decreaseDurability": null,
+        "hungerPerBlock": null,
+        "separateGroupMining": null,
+        "permissionRestricted": null
+      }
+    },
+    {
+      "id": "dark_oak-logs",
+      "blocks": [
+        "minecraft:dark_oak_log",
+        "minecraft:dark_oak_wood"
+      ],
+      "tools": [],
+      "overrides": {
+        "cooldown": null,
+        "mustSneak": null,
+        "maxChain": null,
+        "needCorrectTool": null,
+        "searchRadius": null,
+        "decreaseDurability": null,
+        "hungerPerBlock": null,
+        "separateGroupMining": null,
+        "permissionRestricted": null
+      }
+    },
+    {
+      "id": "mangrove-logs",
+      "blocks": [
+        "minecraft:mangrove_log",
+        "minecraft:mangrove_wood"
+      ],
+      "tools": [],
+      "overrides": {
+        "cooldown": null,
+        "mustSneak": null,
+        "maxChain": null,
+        "needCorrectTool": null,
+        "searchRadius": null,
+        "decreaseDurability": null,
+        "hungerPerBlock": null,
+        "separateGroupMining": null,
+        "permissionRestricted": null
+      }
+    },
+    {
+      "id": "cherry-logs",
+      "blocks": [
+        "minecraft:cherry_log",
+        "minecraft:cherry_wood"
+      ],
+      "tools": [],
+      "overrides": {
+        "cooldown": null,
+        "mustSneak": null,
+        "maxChain": null,
+        "needCorrectTool": null,
+        "searchRadius": null,
+        "decreaseDurability": null,
+        "hungerPerBlock": null,
+        "separateGroupMining": null,
+        "permissionRestricted": null
+      }
+    },
+    {
+      "id": "pale_oak-logs",
+      "blocks": [
+        "minecraft:pale_oak_log",
+        "minecraft:pale_oak_wood"
+      ],
+      "tools": [],
+      "overrides": {
+        "cooldown": null,
+        "mustSneak": null,
+        "maxChain": null,
+        "needCorrectTool": null,
+        "searchRadius": null,
+        "decreaseDurability": null,
+        "hungerPerBlock": null,
+        "separateGroupMining": null,
+        "permissionRestricted": null
+      }
+    }
+  ],
+  "players": []
+}
