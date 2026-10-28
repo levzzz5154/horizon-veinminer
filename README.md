@@ -1,8 +1,8 @@
 # Horizon Veinminer
 
 An unofficial Rust port of Veinminer's server-side connected mining behavior,
-for Horizon commit `028f60881678a9a0e3e198f693a82858fa475c76` (Minecraft 26.3).
-It uses `horizon-mixins` 0.4.0 to build a native Horizon game/server from a
+for Horizon commit `83f15fa276c44711276b6ceb5f0fe0c9c534dc66` (Minecraft 26.3).
+It uses `horizon-mixins` 0.5.0 to build a native Horizon game/server from a
 separate staged source tree. The committed [TOML bundle](mixins/veinminer/horizon-mixin.toml)
 declares three cancellable HEAD hooks and one shared runtime module.
 The original Horizon checkout stays unchanged.
@@ -20,17 +20,36 @@ protection and extra hunger cost. It plans against loaded chunks, rechecks
 block states before mining, and stops when an extra break fails or the tool
 is exhausted. See [configuration](docs/configuration.md).
 
+## Launcher and registry bundle
+
+Version 0.3.0 targets nightly `nightly/build-2026-10-28-3` (`83f15fa27`)
+and Horizon Mixins 0.5.0 (`0500ff2`). Package the source for a launcher with
+native-mod support:
+
+```sh
+python3 tools/package.py
+```
+
+This writes `target/veinminer-0.3.0.hnmod` and prints its SHA-256. The archive
+contains the native compatibility manifest and mixin sources, with deterministic
+bytes and timestamps. The launcher checks it against the registry, installs it
+under `horizon-native-mods/`, and builds an isolated game on first Play. Toggle
+or remove it through the launcher's installed Mods list. Other Horizon revisions
+are marked **Unverified support**; they require an exact installed source revision,
+and must pass mixin planning and compilation before launch. Native code runs with
+your account's permissions. The original bundle and source checkout stay unchanged.
+
 ## Build
 
 Requirements: Linux, Rust 1.95.0, Python 3.12+, a local pinned Horizon Git clone,
-Horizon Mixins 0.4.0, and cached Cargo dependencies. This checkout defaults to
+Horizon Mixins 0.5.0, and cached Cargo dependencies. This checkout defaults to
 the sibling
 `../horizon`; pass `--horizon /path/to/horizon` for another location.
 
 ```sh
 cargo fetch --locked
 # Clone once beside this repository (or set HORIZON_MIXINS to its path):
-git clone https://github.com/levzzz5154/horizon-mixins ../horizon-mixins
+git clone https://github.com/horizon-rust/horizon-mixins ../horizon-mixins
 # Use the exact revision recorded in compatibility.json:
 python3 -c 'import json,subprocess; subprocess.run(["git","-C","../horizon-mixins","checkout",json.load(open("compatibility.json"))["horizon_mixins_revision"]],check=True)'
 cargo fetch --locked --manifest-path ../horizon-mixins/Cargo.toml
@@ -93,6 +112,8 @@ cargo fmt --manifest-path tools/audit/Cargo.toml --check
 cargo clippy --all-targets --locked --offline -- -D warnings
 cargo test --locked --offline
 python3 tools/bundle.py --check
+python3 tools/test_ci.py
+python3 tools/test_package.py
 python3 tools/test_stage.py
 python3 tools/horizon.py check
 python3 tools/horizon.py test

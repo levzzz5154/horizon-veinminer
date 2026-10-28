@@ -29,7 +29,7 @@ client prediction and creative/adventure/spectator chains.
 compatibility hashes, and materializes the committed documentation symlink.
 It never replaces or appends Rust source itself. It invokes the standard
 `horizon-mixins plan` and `apply` commands with `mixins/veinminer/` and records
-the schema-4 JSON plan in `target/mixins/plan.json`. Three cancellable HEAD
+the schema-5 JSON plan in `target/mixins/plan.json`. Three cancellable HEAD
 hooks handle the mining entry, normal command dispatch and guest command
 queueing. A support-module declaration installs the shared runtime. The
 original native mining method and original `Game` layout/constructors stay intact.
