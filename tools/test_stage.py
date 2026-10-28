@@ -30,7 +30,7 @@ def main():
         assert second==output and not changed
         assert first==snapshot(output)
         plan=json.loads((root/'plan.json').read_text())
-        assert plan['schema']==4
+        assert plan['schema']==horizon.COMPAT['mixin_schema']
         assert len(plan['injections'])==3 and len(plan['modules'])==1
         assert {p['mod_id'] for p in plan['injections']}=={'veinminer'}
         pristine=list((root/'original').glob('*/.horizon-veinminer.json'))[0].parent

@@ -1,10 +1,10 @@
 [mod]
 id = "veinminer"
-version = "0.2.0"
+version = "0.3.0"
 priority = 100
 
 [compatibility]
-horizon_revision = "028f60881678a9a0e3e198f693a82858fa475c76"
+horizon_revision = "83f15fa276c44711276b6ceb5f0fe0c9c534dc66"
 
 [[module]]
 id = "runtime"
