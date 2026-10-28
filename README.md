@@ -33,11 +33,16 @@ python3 tools/package.py
 This writes `target/veinminer-0.3.0.hnmod` and prints its SHA-256. The archive
 contains the native compatibility manifest and mixin sources, with deterministic
 bytes and timestamps. The launcher checks it against the registry, installs it
-under `horizon-native-mods/`, and builds an isolated game on first Play. Toggle
-or remove it through the launcher's installed Mods list. Other Horizon revisions
-are marked **Unverified support**; they require an exact installed source revision,
-and must pass mixin planning and compilation before launch. Native code runs with
-your account's permissions. The original bundle and source checkout stay unchanged.
+under `horizon-native-mods/`. Turn on Settings → Game → **Native mods
+(experimental)**, choose **Build**, and confirm the native-code warning. The
+launcher downloads its own Rust toolchain and builds the exact Horizon and Mixins
+revisions pinned above as a separate native version. Install Horizon first and
+provide the platform build dependencies described in
+[Horizon's native-mod documentation](https://github.com/horizon-rust/horizon/blob/main/docs/native-mods.md).
+Toggle or remove bundles through the installed Mods list, then rebuild the enabled
+combination. Ordinary Play does not compile mods automatically. Other Horizon
+revisions have not been validated. Native code runs with your account's permissions.
+The original bundle and source checkout stay unchanged.
 
 ## Build
 
