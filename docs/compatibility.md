@@ -25,7 +25,7 @@ configuration format and native Horizon adapter.
 | Upstream `/settings`, `/groups`, `/presets`, `/blocks` editing | Future work; edit JSON and reload |
 | Tags, wildcard IDs and client/server configuration packets | Future work; explicit IDs and server configuration only |
 | Automatic updates | Future work |
-| Native mixin bundle | Implemented: three TOML HEAD injections and one support module, applied by horizon-mixins 0.5.0 |
+| Native mixin bundle | Implemented: three TOML HEAD injections and one support module, applied by horizon-mixins 0.6.0 |
 | `.hmod` packaging | Future work; the bundle builds a pinned custom native binary |
 
 The maximum chain counts eligible selected blocks, including the original.

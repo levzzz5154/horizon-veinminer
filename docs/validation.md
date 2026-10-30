@@ -52,6 +52,25 @@ The earlier fast cached compilation number is not a full-workspace planning
 measurement. Engine 0.4.0 independently passes 48 integration tests, including
 positive/negative lifetime HEAD and support-module cases plus snapshots.
 
+## Nightly ba6344a / Mixins 0.6.0 (2026-10-30)
+
+Version 0.3.1 pins Horizon `ba6344a59cb9e755b730dcf02285fc0d33b97d3c`
+(Nightly 2026-10-30, tag `nightly-source/2026-10-30-ba6344a`) and Mixins
+`d9c83d7096b7ea5b83678da2efdfd6161f74997e` (0.6.0, plan schema 6). The three
+hooked files changed upstream; their hashes are updated and the hooks apply unchanged.
+
+- Rust formatting and Clippy with warnings denied: passed.
+- Independent engine/config tests: 13 passed.
+- Native `horizon.py check`: passed against the exact source revision.
+- Native `horizon.py test`: all 13 engine tests passed inside Horizon's game binary.
+- `test_stage.py`: passed; deterministic bytes and mtimes, original ASTs preserved,
+  original checkout unchanged.
+- `test_ci.py`, `test_package.py`: passed.
+- `tools/package.py`: 10,309-byte `.hnmod`; SHA-256
+  `4feddef5c77800a54e837b8f5f2ce1e8e9fbf8f1953b6752b733bcf84d63dd10`.
+
+No gameplay session was run for this update.
+
 ## Nightly 83f15fa27 / Mixins 0.5.0 (2026-10-28)
 
 Version 0.3.0 pins Horizon `83f15fa276c44711276b6ceb5f0fe0c9c534dc66`
