@@ -1,8 +1,8 @@
 # Horizon Veinminer
 
 An unofficial Rust port of Veinminer's server-side connected mining behavior,
-for Horizon commit `83f15fa276c44711276b6ceb5f0fe0c9c534dc66` (Minecraft 26.3).
-It uses `horizon-mixins` 0.5.0 to build a native Horizon game/server from a
+for Horizon commit `ba6344a59cb9e755b730dcf02285fc0d33b97d3c` (Minecraft 26.3).
+It uses `horizon-mixins` 0.6.0 to build a native Horizon game/server from a
 separate staged source tree. The committed [TOML bundle](mixins/veinminer/horizon-mixin.toml)
 declares three cancellable HEAD hooks and one shared runtime module.
 The original Horizon checkout stays unchanged.
@@ -22,15 +22,15 @@ is exhausted. See [configuration](docs/configuration.md).
 
 ## Launcher and registry bundle
 
-Version 0.3.0 targets nightly `nightly/build-2026-10-28-3` (`83f15fa27`)
-and Horizon Mixins 0.5.0 (`0500ff2`). Package the source for a launcher with
+Version 0.3.1 targets Nightly 2026-10-30 (`ba6344a`, tag `nightly-source/2026-10-30-ba6344a`)
+and Horizon Mixins 0.6.0 (`d9c83d7`). Package the source for a launcher with
 native-mod support:
 
 ```sh
 python3 tools/package.py
 ```
 
-This writes `target/veinminer-0.3.0.hnmod` and prints its SHA-256. The archive
+This writes `target/veinminer-0.3.1.hnmod` and prints its SHA-256. The archive
 contains the native compatibility manifest and mixin sources, with deterministic
 bytes and timestamps. The launcher checks it against the registry, installs it
 under `horizon-native-mods/`. Turn on Settings → Game → **Native mods
@@ -47,7 +47,7 @@ The original bundle and source checkout stay unchanged.
 ## Build
 
 Requirements: Linux, Rust 1.95.0, Python 3.12+, a local pinned Horizon Git clone,
-Horizon Mixins 0.5.0, and cached Cargo dependencies. This checkout defaults to
+Horizon Mixins 0.6.0, and cached Cargo dependencies. This checkout defaults to
 the sibling
 `../horizon`; pass `--horizon /path/to/horizon` for another location.
 
