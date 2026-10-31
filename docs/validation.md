@@ -52,6 +52,26 @@ The earlier fast cached compilation number is not a full-workspace planning
 measurement. Engine 0.4.0 independently passes 48 integration tests, including
 positive/negative lifetime HEAD and support-module cases plus snapshots.
 
+## Nightly d91cab6 / Mixins 4342a0b (2026-10-31)
+
+Version 0.3.2 pins Horizon `d91cab68ded29bd2b004f7050c468fb98c41a00b`
+(Nightly 2026-10-31, tag `nightly-source/2026-10-31-d91cab6`) and Mixins
+`4342a0bfbe71d4d14185528d64e496d6022f16a1` (0.6.0, plan schema 6, the launcher's
+`MIXINS_REV`). The three hooked files changed upstream; their hashes are updated and
+the hooks apply unchanged. Horizon dropped `Dim::min_y`/`max_y` (each level's height
+now comes from its dimension type), so the adapter reads the loaded level's
+`world.shape`, which also follows data-pack heights.
+
+- Rust formatting and Clippy with warnings denied: passed.
+- Independent engine/config tests: 13 passed.
+- Native `horizon.py check`: passed against the exact source revision.
+- Native `horizon.py test`: all 13 engine tests passed inside Horizon's game binary.
+- `test_stage.py`, `test_ci.py`, `test_package.py`: passed.
+- `tools/package.py`: 10,313-byte `.hnmod`; SHA-256
+  `31a4249da1b35972ae8b34201373c86352f4adc2f5cb3e015749d1fbfecf00a0`.
+
+No gameplay session was run for this update.
+
 ## Nightly ba6344a / Mixins 0.6.0 (2026-10-30)
 
 Version 0.3.1 pins Horizon `ba6344a59cb9e755b730dcf02285fc0d33b97d3c`

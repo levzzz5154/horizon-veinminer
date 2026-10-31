@@ -72,8 +72,8 @@ impl Host for Native<'_, '_> {
         }
     }
     fn block(&self, p: Position) -> Option<Block> {
-        if p[1] < self.game.dim.min_y()
-            || p[1] > self.game.dim.max_y()
+        if p[1] < self.game.world.shape.min_y
+            || p[1] >= self.game.world.shape.max_y()
             || !self.game.world.loaded(p[0], p[2])
         {
             return None;
