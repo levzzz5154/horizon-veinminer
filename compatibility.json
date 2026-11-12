@@ -1,14 +1,14 @@
 {
   "horizon_repository": "https://github.com/horizon-rust/horizon",
-  "horizon_revision": "d91cab68ded29bd2b004f7050c468fb98c41a00b",
+  "horizon_revision": "fdc87aecdbd116bf1e08adcd062fcbaea8c2e2ca",
   "veinminer_reference": "https://github.com/MiraculixxT/Veinminer",
   "veinminer_revision": "b3bfeb39945260f857a9b79c11dc206c109a9d0c",
   "source_sha256": {
-    "crates/horizon-client/src/game.rs": "b99ccd23927aa4de5edf44322a0a4706b76d60fc109ace893899d9258cbf2c43",
-    "crates/horizon-client/src/game/commands.rs": "e3fa89a1505d840e21f606cae98046e959a0102f321d4b5d6748d638c8e4a749",
-    "crates/horizon-client/src/game/lan_actions.rs": "43dd8150788524a664c9bfc81c0bd76807aadd4941b3b8a9ccf6178637620b9e"
+    "crates/horizon-client/src/game.rs": "419c2bdd785f2fef499ae460c41f0bfc125b19fb12a8a8c3cef54b27de4687df",
+    "crates/horizon-client/src/game/commands.rs": "532e92273896b78b818682f0e0ec392d56c8cde003136d27f16f6d1271076cfd",
+    "crates/horizon-client/src/game/lan_actions.rs": "18e0adc33517f7d0d9313eade3a60d18000a72a80d60cb50b8a5afe425d91cc7"
   },
   "mixin_schema": 6,
   "horizon_mixins_repository": "https://github.com/horizon-rust/horizon-mixins",
-  "horizon_mixins_revision": "4342a0bfbe71d4d14185528d64e496d6022f16a1"
+  "horizon_mixins_revision": "5a64af938ec86b00d53d16a408aabc0038fb3e57"
 }
