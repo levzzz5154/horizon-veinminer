@@ -52,6 +52,29 @@ The earlier fast cached compilation number is not a full-workspace planning
 measurement. Engine 0.4.0 independently passes 48 integration tests, including
 positive/negative lifetime HEAD and support-module cases plus snapshots.
 
+## Nightly 9f42064 / Mixins 5a64af9 (2026-11-13)
+
+Version 0.3.3 pins Horizon `9f42064c11efe7ef3e5ed2baad7ddc2a3b36eea0`
+(Nightly 2026-11-13) and Mixins `5a64af938ec86b00d53d16a408aabc0038fb3e57`, the
+revisions the launcher builds native mods with for that Nightly. Horizon moved
+`Game::break_block` out of `game.rs` into `game/block_breaking.rs` (10ffe236fb), so
+the `mining` HEAD now targets `horizon_client::game::block_breaking::Game<'_>::break_block`.
+The runtime module, the two command HEADs and the methods the adapter calls apply
+unchanged; `block_breaking.rs` joins the hashed sources.
+
+Checked on macOS arm64 with Rust 1.100.0:
+
+- Rust formatting and Clippy with warnings denied: passed.
+- Independent engine/config tests: 13 passed.
+- `horizon-mixins plan`: 3 injections and 1 module resolved on the exact revision.
+- Native `horizon.py check`: passed against the exact source revision.
+- `test_ci.py`, `test_package.py`: passed. `test_stage.py` stops with the mixin CLI's
+  `E_STALE_SOURCE` on macOS (the tooling targets Linux); not run on Linux.
+- `tools/package.py`: 10,313-byte `.hnmod`; SHA-256
+  `c91c4ce501b0e6addbc2296f9f925ca7ff3db7ebe478bf9719b711f54b0ff7b4`.
+
+`horizon.py test` was not run. No gameplay session was run for this update.
+
 ## Nightly d91cab6 / Mixins 4342a0b (2026-10-31)
 
 Version 0.3.2 pins Horizon `d91cab68ded29bd2b004f7050c468fb98c41a00b`

@@ -1,7 +1,7 @@
 # Horizon Veinminer
 
 An unofficial Rust port of Veinminer's server-side connected mining behavior,
-for Horizon commit `d91cab68ded29bd2b004f7050c468fb98c41a00b` (Minecraft 26.3).
+for Horizon commit `9f42064c11efe7ef3e5ed2baad7ddc2a3b36eea0` (Minecraft 26.3).
 It uses `horizon-mixins` 0.6.0 to build a native Horizon game/server from a
 separate staged source tree. The committed [TOML bundle](mixins/veinminer/horizon-mixin.toml)
 declares three cancellable HEAD hooks and one shared runtime module.
@@ -22,15 +22,15 @@ is exhausted. See [configuration](docs/configuration.md).
 
 ## Launcher and registry bundle
 
-Version 0.3.2 targets Nightly 2026-10-31 (`d91cab6`, tag `nightly-source/2026-10-31-d91cab6`)
-and Horizon Mixins 0.6.0 (`4342a0b`). Package the source for a launcher with
+Version 0.3.3 targets Nightly 2026-11-13 (`9f42064`)
+and Horizon Mixins `5a64af9`. Package the source for a launcher with
 native-mod support:
 
 ```sh
 python3 tools/package.py
 ```
 
-This writes `target/veinminer-0.3.2.hnmod` and prints its SHA-256. The archive
+This writes `target/veinminer-0.3.3.hnmod` and prints its SHA-256. The archive
 contains the native compatibility manifest and mixin sources, with deterministic
 bytes and timestamps. The launcher checks it against the registry, installs it
 under `horizon-native-mods/`. Turn on Settings → Game → **Native mods

@@ -1,10 +1,10 @@
 [mod]
 id = "veinminer"
-version = "0.3.2"
+version = "0.3.3"
 priority = 100
 
 [compatibility]
-horizon_revision = "d91cab68ded29bd2b004f7050c468fb98c41a00b"
+horizon_revision = "9f42064c11efe7ef3e5ed2baad7ddc2a3b36eea0"
 
 [[module]]
 id = "runtime"
@@ -16,7 +16,7 @@ source = "runtime.rs"
 id = "mining"
 kind = "HEAD"
 cancellable = true
-target = "horizon_client::game::Game<'_>::break_block"
+target = "horizon_client::game::block_breaking::Game<'_>::break_block"
 helper = "mining.rs"
 bindings = [
   { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
